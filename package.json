@@ -1,0 +1,9 @@
+{
+  "name": "story-teller",
+  "version": "1.0.0",
+  "description": "Generates a new story given a hero, a villain, and a location. Then renders the story in a e-ink device.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ."
+  }
+}
