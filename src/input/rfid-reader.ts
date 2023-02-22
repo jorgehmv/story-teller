@@ -5,7 +5,7 @@ export class RfidReader implements IReader {
   async read(): Promise<string> {
     console.log("entered read");
     var sp = new SerialPort({
-      path: "/dev/tty.usbserial-0001",
+      path: process.env.USB_SERIAL_PATH!,
       baudRate: 4800,
     });
 
