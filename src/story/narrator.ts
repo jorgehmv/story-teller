@@ -22,32 +22,37 @@ export class Narrator {
 
   private async askingHero() {
     this.displayer.display("enter hero id:");
-    const userInput = await this.reader.read();
+    let hero: IElement | null;
 
-    const hero = findHeroById(userInput);
-    if (hero) {
-      await this.askingVillain(hero);
-    }
+    do {
+      const userInput = await this.reader.read();
+      hero = findHeroById(userInput);
+    } while (!hero);
+
+    await this.askingVillain(hero);
   }
 
   private async askingVillain(hero: IElement) {
     this.displayer.display("enter villain id:");
-    const userInput = await this.reader.read();
+    let villain: IElement | null;
 
-    const villain = findVillainById(userInput);
-    if (villain) {
-      await this.askingSetting(hero, villain);
-    }
+    do {
+      const userInput = await this.reader.read();
+      villain = findVillainById(userInput);
+    } while (!villain);
+
+    await this.askingSetting(hero, villain);
   }
 
   private async askingSetting(hero: IElement, villain: IElement) {
     this.displayer.display("enter setting id:");
-    const userInput = await this.reader.read();
+    let setting: IElement | null;
+    do {
+      const userInput = await this.reader.read();
+      setting = findSettingById(userInput);
+    } while (!setting);
 
-    const setting = findSettingById(userInput);
-    if (setting) {
-      await this.tellStory(hero, villain, setting);
-    }
+    await this.tellStory(hero, villain, setting);
   }
 
   private async tellStory(
