@@ -2,6 +2,11 @@ import { IReader } from "./reader";
 // import { SerialPort } from "serialport";
 import HID from "node-hid";
 
+const mapping = {
+  "'": () => 0,
+  "(": () => -1,
+};
+
 export class RfidReader implements IReader {
   // async read(): Promise<string> {
   //   console.log("entered read");
@@ -41,13 +46,25 @@ export class RfidReader implements IReader {
     }
     const path = process.env.USB_SERIAL_PATH ?? devices[0].path!;
 
-    var device = new HID.HID(path);
+    const device = new HID.HID(path);
+    let value = "";
 
     return await new Promise((resolve) => {
-      device.on("data", function (data) {
-        console.log(`got data: ${data}`);
-        device.close();
-        resolve(data);
+      device.on("data", function (bufferData) {
+        value += bufferData.toString().trim().replace(/\0/g, "");
+
+        if (value.endsWith("(")) {
+          console.log("closing 2");
+          const input = Array.from(value)
+            .slice(0, -1)
+            .map((c) =>
+              c !== "'" ? String.fromCharCode(c.charCodeAt(0) + 19) : "0"
+            )
+            .join("");
+
+            resolve(input)
+        }
+        // }
       });
 
       device.on("error", function (err) {
@@ -56,3 +73,4 @@ export class RfidReader implements IReader {
     });
   }
 }
+//'''"'%#$& (

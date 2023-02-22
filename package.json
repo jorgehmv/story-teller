@@ -21,7 +21,6 @@
     "app-root-path": "^3.1.0",
     "dotenv": "^16.0.3",
     "node-hid": "^2.1.2",
-    "openai": "^3.1.0",
-    "serialport": "^10.5.0"
+    "openai": "^3.1.0"
   }
 }

@@ -14,6 +14,12 @@ type ConfigFileType = keyof typeof configFilePaths;
 type ConfigFile = { [key: string]: IElement };
 
 function readConfig(type: ConfigFileType): ConfigFile {
+  const path = configFilePaths[type];
+
+  if (!fs.existsSync(path)) {
+    return {};
+  }
+
   const data = fs.readFileSync(configFilePaths[type], "utf8");
   return data ? JSON.parse(data) : {};
 }
