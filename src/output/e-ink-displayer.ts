@@ -12,7 +12,7 @@ export class EInkDisplayer implements IDisplayer {
   }
 
   private showText(text: string, mode: Mode) {
-    lastArgs = [text, mode];
+    spawn("python3", ["./e-ink-lib/display.py", text, mode]);
   }
 
   private scheduleRefresh(text: string, mode: Mode) {
