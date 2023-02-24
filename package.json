@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "description": "Generates a new story given a hero, a villain, and a location. Then renders the story in a e-ink device.",
   "scripts": {
-    "build": "rimraf ./build && tsc",
+    "build": "rimraf ./build && tsc && copyfiles -u 1 src/**/*.py src/**/*.ttc build/",
     "start": "npm run build && node build/index.js teller",
     "start:dev": "npx nodemon"
   },
   "devDependencies": {
     "@types/node": "^18.14.0",
     "@types/node-hid": "^1.3.1",
+    "copyfiles": "^2.4.1",
     "nodemon": "^2.0.20",
     "prettier": "^2.8.4",
     "rimraf": "^4.1.2",
