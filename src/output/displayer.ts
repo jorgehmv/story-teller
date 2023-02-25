@@ -1,4 +1,4 @@
 export type Mode = "prompt" | "story";
 export interface IDisplayer {
-  display(text: string, mode: Mode): void;
+  display(text: string, mode: Mode): Promise<void>;
 }

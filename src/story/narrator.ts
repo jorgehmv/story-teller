@@ -21,7 +21,7 @@ export class Narrator {
   }
 
   private async askingHero() {
-    this.displayer.display("enter hero id:", "prompt");
+    await this.displayer.display("enter hero id:", "prompt");
     let hero: IElement | null;
 
     do {
@@ -33,7 +33,7 @@ export class Narrator {
   }
 
   private async askingVillain(hero: IElement) {
-    this.displayer.display("enter villain id:", "prompt");
+    await this.displayer.display("enter villain id:", "prompt");
     let villain: IElement | null;
 
     do {
@@ -45,7 +45,7 @@ export class Narrator {
   }
 
   private async askingSetting(hero: IElement, villain: IElement) {
-    this.displayer.display("enter setting id:", "prompt");
+    await this.displayer.display("enter setting id:", "prompt");
     let setting: IElement | null;
     do {
       const userInput = await this.reader.read();
@@ -63,7 +63,10 @@ export class Narrator {
     const prompt = getPrompt(hero, villain, setting);
     const story = await getTextCompletion(prompt);
     // TODO: paging?
-    this.displayer.display(story || "can't come up with any story", "story");
+    await this.displayer.display(
+      story || "can't come up with any story",
+      "story"
+    );
 
     const userInput = await this.reader.read();
     if (isRestart(userInput)) {
