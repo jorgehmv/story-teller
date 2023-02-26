@@ -14,9 +14,13 @@ export class EInkDisplayer implements IDisplayer {
     this.scheduleRefresh(message, mode);
   }
 
-  async next(): Promise<void> {
+  hasPending(): boolean {
+    return !!this.pendingText;
+  }
+
+  async displayPending(): Promise<void> {
     console.log("$$$$$$", this.pendingText);
-    if (this.pendingText) {
+    if (this.hasPending()) {
       await this.display(this.pendingText, "story");
     }
   }

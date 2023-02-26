@@ -82,18 +82,3 @@ export const getPrompt = (
     .replace("%villain%", villain.description)
     .replace("%setting%", setting.description);
 };
-
-export const isRestart = (id: string): boolean => {
-  const rawActions = fs.readFileSync(`${configPath}/actions.json`, "utf8");
-  const actions = JSON.parse(rawActions);
-
-  return actions.restart === id;
-};
-
-export const isNext = (id: string): boolean => {
-  const rawActions = fs.readFileSync(`${configPath}/actions.json`, "utf8");
-  const actions = JSON.parse(rawActions);
-
-  console.log(actions.next, "---", id);
-  return actions.next === id;
-};

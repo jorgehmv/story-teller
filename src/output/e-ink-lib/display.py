@@ -66,6 +66,9 @@ try:
     draw.text((10,y_pos), text_wrapped, font=font, fill=0)
     y_pos = new_y_pos
 
+  if mode == 'story':
+    draw.text((280, 750), "Fin", font=font, fill=0)
+
   epd.display(epd.getbuffer(Himage))
   epd.sleep()
 

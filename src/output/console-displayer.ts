@@ -4,5 +4,8 @@ export class ConsoleDisplayer implements IDisplayer {
   async display(text: string, _mode: Mode): Promise<void> {
     console.log(text);
   }
-  async next(): Promise<void> {}
+  hasPending(): boolean {
+    return false;
+  }
+  async displayPending(): Promise<void> {}
 }

@@ -3,8 +3,6 @@ import {
   findSettingById,
   findVillainById,
   getPrompt,
-  isNext,
-  isRestart,
 } from "../config/repository";
 import { IReader } from "../input/reader";
 import { IDisplayer } from "../output/displayer";
@@ -70,13 +68,15 @@ export class Narrator {
     );
 
     do {
-      const userInput = await this.reader.read();
-      if (isRestart(userInput)) {
-        await this.start();
+      await this.reader.read();
+
+      if (this.displayer.hasPending()) {
+        await this.displayer.displayPending();
+      } else {
         break;
-      } else if (isNext(userInput)) {
-        await this.displayer.next();
       }
     } while (true);
+
+    await this.start();
   }
 }
