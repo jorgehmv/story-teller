@@ -28,8 +28,10 @@ export class EInkDisplayer implements IDisplayer {
 
     const successCode = `${processId}_success`;
     const paginationCode = `${processId}_continue`;
+    console.log("starting");
     return new Promise<void>((resolve) => {
       pyProcess.stdout.on("data", (data) => {
+        console.log("receiving");
         const dataString: string = data.toString();
         console.log(
           dataString,
@@ -42,10 +44,13 @@ export class EInkDisplayer implements IDisplayer {
           this.pendingText = "";
           resolve();
         } else if (dataString.match(paginationCode)) {
+          console.log("matched pagination");
           const index = dataString.indexOf(paginationCode);
+          console.log(`at index ${index}`);
           this.pendingText = dataString.substring(
             index + paginationCode.length
           );
+          console.log(`pending: ${this.pendingText}`);
           resolve();
         }
       });

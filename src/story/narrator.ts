@@ -22,7 +22,7 @@ export class Narrator {
   }
 
   private async askingHero() {
-    await this.displayer.display("enter hero id:", "prompt");
+    await this.displayer.display("¿Quién será el héroe?", "prompt");
     let hero: IElement | null;
 
     do {
@@ -34,7 +34,7 @@ export class Narrator {
   }
 
   private async askingVillain(hero: IElement) {
-    await this.displayer.display("enter villain id:", "prompt");
+    await this.displayer.display("¿Quién será el villano?", "prompt");
     let villain: IElement | null;
 
     do {
@@ -46,7 +46,7 @@ export class Narrator {
   }
 
   private async askingSetting(hero: IElement, villain: IElement) {
-    await this.displayer.display("enter setting id:", "prompt");
+    await this.displayer.display("¿En dónde será la historia?", "prompt");
     let setting: IElement | null;
     do {
       const userInput = await this.reader.read();
