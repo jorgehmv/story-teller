@@ -94,5 +94,6 @@ export const isNext = (id: string): boolean => {
   const rawActions = fs.readFileSync(`${configPath}/actions.json`, "utf8");
   const actions = JSON.parse(rawActions);
 
+  console.log(actions.next, "---", id);
   return actions.next === id;
 };

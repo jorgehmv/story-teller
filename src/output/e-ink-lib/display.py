@@ -50,14 +50,15 @@ try:
 
     text_wrapped = wrapper.fill(text=paragraph)
     paragraph_height = math.ceil(len(paragraph) / float(((width - 5)))) * 30
-    y_pos = y_pos + paragraph_height
+    new_y_pos = y_pos + paragraph_height
 
-    if y_pos > 500:
-      draw.text((280, 500), "Continúa...", font=font, fill=0)
+    if new_y_pos > 750:
+      draw.text((280, 750), "Continúa...", font=font, fill=0)
       print(process_id + "_continue" + "\n".join(paragraphs[-(len(paragraphs) - idx):]))
       break
 
     draw.text((10,y_pos), text_wrapped, font=font, fill=0)
+    y_pos = new_y_pos
 
   epd.display(epd.getbuffer(Himage))
 

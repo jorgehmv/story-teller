@@ -15,6 +15,7 @@ export class EInkDisplayer implements IDisplayer {
   }
 
   async next(): Promise<void> {
+    console.log("$$$$$$", this.pendingText);
     if (this.pendingText) {
       await this.display(this.pendingText, "story");
     }
@@ -23,13 +24,20 @@ export class EInkDisplayer implements IDisplayer {
   private async showText(text: string, mode: Mode) {
     const pythonFilePath = path.join(__dirname, "e-ink-lib", "display.py");
     const processId = uuidv4();
-    const pyProcess = spawn("python3", [pythonFilePath, text, mode, uuidv4()]);
+    const pyProcess = spawn("python3", [pythonFilePath, text, mode, processId]);
 
-    const successCode = `${processId}_continue`;
+    const successCode = `${processId}_success`;
     const paginationCode = `${processId}_continue`;
     return new Promise<void>((resolve) => {
       pyProcess.stdout.on("data", (data) => {
         const dataString: string = data.toString();
+        console.log(
+          dataString,
+          successCode,
+          dataString.match(successCode),
+          paginationCode,
+          dataString.match(paginationCode)
+        );
         if (dataString.match(successCode)) {
           this.pendingText = "";
           resolve();
@@ -38,6 +46,7 @@ export class EInkDisplayer implements IDisplayer {
           this.pendingText = dataString.substring(
             index + paginationCode.length
           );
+          resolve();
         }
       });
 
@@ -67,10 +76,21 @@ Los animales se reunieron en la cima de la montaña y se dispusieron a enfrentar
 El gato se quedó sorprendido ante estos pequeños animales que osaban desafiarlo. Al ver su valentía se dio cuenta de lo equivocado que había estado al intentar dominarlos sin pedirles permiso primero. Se disculpó por su comportamiento egoísta y les ofreció su amistad como gesto de buena voluntad. Las ratas lo aceptaron y desde entonces han vivido en armonía juntos en lo alto de la montaña nevada y lúgubre.`;
 
 const pythonFilePath = "/home/pi/story-teller/build/output/e-ink-lib/display.py";
-const pyProcess = spawn("python3", [pythonFilePath, text, "story"]);
+const processId = "id___"
+const pyProcess = spawn("python3", [pythonFilePath, text, "story", processId]);
 
 pyProcess.stdout.on("data", function (data) {
-  console.log(data.toString(), data === "True", /True/.test(data.toString()));
+        const dataString = data.toString();
+        const successCode = `${processId}_continue`;
+        const paginationCode = `${processId}_continue`;
+
+        console.log(
+          dataString,
+          successCode,
+          dataString.match(successCode),
+          paginationCode,
+          dataString.match(paginationCode)
+        );
 });
 
 pyProcess.stderr.on("data", (data) => {
