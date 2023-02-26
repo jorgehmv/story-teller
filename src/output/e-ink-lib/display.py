@@ -9,44 +9,65 @@ if os.path.exists(libdir):
 from lib import epd7in5_V2
 import textwrap
 from PIL import Image, ImageDraw, ImageFont
+import re
+import math
 
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
 
-screen_mode = None
 
-epd = epd7in5_V2.EPD()
-epd.init()
-epd.Clear()
+text = sys.argv[1]
+mode = sys.argv[2]
+process_id = sys.argv[3]
 
 try:
-  text = sys.argv[1]
-  mode = sys.argv[2]
+  epd = epd7in5_V2.EPD()
+  epd.init()
+  epd.Clear()
 
+  width = 40
   font24 = ImageFont.truetype(os.path.join(libdir, 'Font.ttc'), 24)
   font35 = ImageFont.truetype(os.path.join(libdir, 'Font.ttc'), 35)
 
   font = font35 if mode == 'prompt' else font24
-  width = 40 # TODO: confirm
   y_pos = 300 if mode == 'prompt' else 30
 
-  wrapper = textwrap.TextWrapper(width=width)
-  text_wrapped = wrapper.fill(text=text)
+  paragraphs = []
+  if mode == 'story':
+    re.sub('\\n\nn+', '\\n', text)
+    paragraphs = text.split('\n')
+  else:
+    paragraphs = [text]
 
   Himage = Image.new('1', (epd.height, epd.width), 255)  # 255: clear the frame
+
+  wrapper = textwrap.TextWrapper(width=width)
   draw = ImageDraw.Draw(Himage)
-  draw.text((10,y_pos), text_wrapped, font=font, fill=0)
+  for idx, paragraph in enumerate(paragraphs):
+    if len(paragraph) == 0:
+      continue
+
+    text_wrapped = wrapper.fill(text=paragraph)
+    paragraph_height = math.ceil(len(paragraph) / float(((width - 5)))) * 30
+    y_pos = y_pos + paragraph_height
+
+    if y_pos > 500:
+      draw.text((280, 500), "Continúa...", font=font, fill=0)
+      print(process_id + "_continue" + "\n".join(paragraphs[-(len(paragraphs) - idx):]))
+      break
+
+    draw.text((10,y_pos), text_wrapped, font=font, fill=0)
 
   epd.display(epd.getbuffer(Himage))
 
   epd.sleep()
 
-  print(True)
+  print(process_id + "_success")
 
   sys.exit()
 except IOError as e:
-  print(False)
+  print(process_id + "_failure")
   sys.exit()
 except KeyboardInterrupt:
   # wake from sleep

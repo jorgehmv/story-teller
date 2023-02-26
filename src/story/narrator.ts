@@ -3,6 +3,7 @@ import {
   findSettingById,
   findVillainById,
   getPrompt,
+  isNext,
   isRestart,
 } from "../config/repository";
 import { IReader } from "../input/reader";
@@ -68,9 +69,14 @@ export class Narrator {
       "story"
     );
 
-    const userInput = await this.reader.read();
-    if (isRestart(userInput)) {
-      await this.start();
-    }
+    do {
+      const userInput = await this.reader.read();
+      if (isRestart(userInput)) {
+        await this.start();
+        break;
+      } else if (isNext(userInput)) {
+        await this.displayer.next();
+      }
+    } while (true);
   }
 }

@@ -84,8 +84,15 @@ export const getPrompt = (
 };
 
 export const isRestart = (id: string): boolean => {
-  const rawActions = fs.readFileSync(`${configPath}/actions.txt`, "utf8");
+  const rawActions = fs.readFileSync(`${configPath}/actions.json`, "utf8");
   const actions = JSON.parse(rawActions);
 
   return actions.restart === id;
+};
+
+export const isNext = (id: string): boolean => {
+  const rawActions = fs.readFileSync(`${configPath}/actions.json`, "utf8");
+  const actions = JSON.parse(rawActions);
+
+  return actions.next === id;
 };
