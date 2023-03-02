@@ -27,6 +27,7 @@ try:
   # epd.Clear() # TODO: I think this is not needed
 
   width = 40
+  font12 = ImageFont.truetype(os.path.join(libdir, 'Font.ttc'), 12)
   font24 = ImageFont.truetype(os.path.join(libdir, 'Font.ttc'), 24)
   font35 = ImageFont.truetype(os.path.join(libdir, 'Font.ttc'), 35)
 
@@ -54,7 +55,7 @@ try:
     new_y_pos = y_pos + paragraph_height
 
     if new_y_pos > 750:
-      draw.text((280, 750), "Continúa...", font=font, fill=0)
+      draw.text((230, 750), "Continúa...", font=font12, fill=0)
 
       epd.display(epd.getbuffer(Himage))
       epd.sleep()
@@ -67,7 +68,7 @@ try:
     y_pos = new_y_pos
 
   if mode == 'story':
-    draw.text((280, 750), "Fin", font=font, fill=0)
+    draw.text((250, 750), "Fin", font=font12, fill=0)
 
   epd.display(epd.getbuffer(Himage))
   epd.sleep()
