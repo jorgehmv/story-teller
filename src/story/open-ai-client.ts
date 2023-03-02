@@ -15,7 +15,6 @@ export const getTextCompletion = async (
   });
   const openai = new OpenAIApi(configuration);
 
-  console.log("prompt", prompt);
   const response = await openai.createCompletion({
     model: "text-davinci-003",
     prompt,
@@ -26,9 +25,6 @@ export const getTextCompletion = async (
     frequency_penalty: 0.5,
     presence_penalty: 0,
   });
-
-  console.log("$$choices", response.data.choices);
-  console.log("%%first choice", response.data.choices[0]);
 
   const story = response.data.choices[0]?.text;
   cache.set(prompt, story);
