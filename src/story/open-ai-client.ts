@@ -1,11 +1,11 @@
 import { Configuration, OpenAIApi } from "openai";
-import NodeCache from "node-cache";
+import Cache from "file-system-cache";
 
-const cache = new NodeCache({ stdTTL: 24 * 60 * 60 });
+const cache = Cache();
 export const getTextCompletion = async (
   prompt: string
 ): Promise<string | undefined> => {
-  const cachedStory = cache.get(prompt);
+  const cachedStory = await cache.get(prompt);
   if (cachedStory) {
     return cachedStory as string;
   }
@@ -27,7 +27,7 @@ export const getTextCompletion = async (
   });
 
   const story = response.data.choices[0]?.text;
-  cache.set(prompt, story);
+  await cache.set(prompt, story);
 
   return story;
 };
