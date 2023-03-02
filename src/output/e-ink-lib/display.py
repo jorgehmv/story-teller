@@ -24,7 +24,7 @@ process_id = sys.argv[3]
 try:
   epd = epd7in5_V2.EPD()
   epd.init()
-  epd.Clear()
+  # epd.Clear() # TODO: I think this is not needed
 
   width = 40
   font24 = ImageFont.truetype(os.path.join(libdir, 'Font.ttc'), 24)
