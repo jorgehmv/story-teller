@@ -3,12 +3,15 @@ import Cache from "file-system-cache";
 
 const cache = Cache();
 export const getTextCompletion = async (
-  prompt: string
+  prompt: string,
+  notCachedCallback: () => Promise<void>
 ): Promise<string | undefined> => {
   const cachedStory = await cache.get(prompt);
   if (cachedStory) {
     return cachedStory as string;
   }
+
+  await notCachedCallback();
 
   const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,

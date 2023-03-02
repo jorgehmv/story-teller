@@ -60,8 +60,13 @@ export class Narrator {
     setting: IElement
   ) {
     const prompt = getPrompt(hero, villain, setting);
-    const story = await getTextCompletion(prompt);
-    // TODO: paging?
+    const story = await getTextCompletion(prompt, async () => {
+      await this.displayer.display(
+        "Ok, dame un momentito para recordar esa historia...",
+        "prompt"
+      );
+    });
+
     await this.displayer.display(
       story || "can't come up with any story",
       "story"
