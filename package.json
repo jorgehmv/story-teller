@@ -5,7 +5,8 @@
   "scripts": {
     "build": "rimraf ./build && tsc && copyfiles -u 1 src/**/*.py src/**/*.ttc build/",
     "start": "npm run build && node build/index.js teller",
-    "start:dev": "npx nodemon"
+    "start:dev": "npx nodemon",
+    "config": "npm run build && node build/index.js config"
   },
   "devDependencies": {
     "@types/node": "^18.14.0",

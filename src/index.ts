@@ -4,6 +4,7 @@ import { Narrator } from "./story/narrator";
 import dotenv from "dotenv";
 import { RfidReader } from "./input/rfid-reader";
 import { EInkDisplayer } from "./output/e-ink-displayer";
+import { admin } from "./config/admin";
 
 dotenv.config();
 const mode = process.argv[2];
@@ -20,7 +21,7 @@ if (mode === "teller") {
 
   storyTeller.start();
 } else if (mode === "config") {
-  // TODO:
+  admin(new ConsoleReader(), new ConsoleDisplayer());
 } else {
   console.error(`Unkown mode: ${mode}`);
 }
