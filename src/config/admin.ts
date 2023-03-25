@@ -1,28 +1,36 @@
-import { IReader } from "../input/reader";
+import { ConsoleReader } from "../input/consoler-reader";
+import { RfidReader } from "../input/rfid-reader";
 import { IDisplayer } from "../output/displayer";
 import { ElementType } from "../story/element";
 import { addHero, addSetting, addVillain } from "./repository";
 
-export const admin = async (reader: IReader, displayer: IDisplayer) => {
+export const admin = async (
+  consoleReader: ConsoleReader,
+  rfidReader: RfidReader,
+  displayer: IDisplayer
+) => {
   while (true) {
-    await inputFlow(reader, displayer);
+    await inputFlow(consoleReader, rfidReader, displayer);
   }
 };
-
-async function inputFlow(reader: IReader, displayer: IDisplayer) {
+async function inputFlow(
+  consoleReader: ConsoleReader,
+  rfidReader: RfidReader,
+  displayer: IDisplayer
+) {
   await displayer.display("enter new card id", "prompt");
-  const cardId = await reader.read();
+  const cardId = await rfidReader.read();
 
   await displayer.display(
     "Enter type (hero=1, villain=2, setting=3)",
     "prompt"
   );
-  const typeInput = await reader.read();
+  const typeInput = await consoleReader.read();
   const type: ElementType =
     typeInput === "1" ? "hero" : typeInput === "2" ? "villain" : "setting";
 
   await displayer.display("enter description", "prompt");
-  const description = await reader.read();
+  const description = await consoleReader.read();
 
   if (type === "hero") {
     addHero(cardId, description);

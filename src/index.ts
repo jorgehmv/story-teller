@@ -21,7 +21,7 @@ if (mode === "teller") {
 
   storyTeller.start();
 } else if (mode === "config") {
-  admin(new ConsoleReader(), new ConsoleDisplayer());
+  admin(new ConsoleReader(), new RfidReader(), new ConsoleDisplayer());
 } else {
   console.error(`Unkown mode: ${mode}`);
 }
